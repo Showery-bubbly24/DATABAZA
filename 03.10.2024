@@ -11,3 +11,15 @@ where countrycode = (
 		-- любое название для текущего марафона
 	)
 );
+
+2) RaceTime
+
+select gender.gender, dateofbirth, marathon.marathonname, registrationevent.racetime 
+from runner
+INNER JOIN gender marathon registrationevent ON gender.genderid = runner.genderid and marathon.marathonname = (
+	select marathoname from marathon
+	where marathonid < (
+		select marathonid from marathon
+		where marathonname = 'Marathon Skills 2013'
+	)
+), 'registrationevent'.racetime = 'marathon'.marathonname
