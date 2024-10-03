@@ -1,0 +1,13 @@
+1) Runners 
+
+select "User".firstname, "User".lastname, countrycode as Bibnumber
+from runner
+INNER JOIN "User" ON "User".email = runner.email
+where countrycode = (
+	select countrycode from country
+	where countrycode = (
+		select countrycode from marathon
+		where marathonname = 'Marathon Skills 2014'
+		-- любое название для текущего марафона
+	)
+);
