@@ -14,12 +14,17 @@ where countrycode = (
 
 2) RaceTime
 
-select gender.gender, dateofbirth, marathon.marathonname, registrationevent.racetime 
-from runner
-INNER JOIN gender marathon registrationevent ON gender.genderid = runner.genderid and marathon.marathonname = (
-	select marathoname from marathon
-	where marathonid < (
-		select marathonid from marathon
-		where marathonname = 'Marathon Skills 2013'
-	)
-), 'registrationevent'.racetime = 'marathon'.marathonname
+select u.firstname, 
+		u.lastname, 
+		g.gender, 
+		r.dateofbirth, 
+		m.marathonname, 
+		re.racetime
+from public."User" u
+join runner r on u.email = r.email
+join gender g on r.genderid = g.genderid
+join country c on r.countrycode = c.countrycode
+join marathon m on c.countrycode = m.countrycode
+join "event" e on m.marathonid = e.marathonid
+join registrationevent re on e.eventid = re.eventid
+where u.firstname = 'ANTONIO' and re.racetime is not null;
