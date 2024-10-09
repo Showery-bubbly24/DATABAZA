@@ -1,16 +1,16 @@
 1)Runners 
 
-select "User".firstname, "User".lastname, countrycode as Bibnumber
-from runner
-INNER JOIN "User" ON "User".email = runner.email
-where countrycode = (
-	select countrycode from country
-	where countrycode = (
-		select countrycode from marathon
-		where marathonname = 'Marathon Skills 2014'
-		-- любое название для текущего марафона
-	)
-);
+select
+	(u.firstname || ' ' || u.lastname) as FIO,
+	r.countrycode as Bibnumber
+from "User" u 
+join runner r on u.email = r.email 
+join gender g on r.genderid = g.genderid 
+join registration reg on r.runnerid = reg.runnerid 
+join registrationevent re on reg.registrationid = re.registrationid 
+join "event" e on re.eventid = e.eventid
+join marathon m on e.marathonid = m.marathonid
+where m.marathonname = 'Marathon Skills 2014';
 
 2)RaceTime
 
@@ -50,3 +50,42 @@ order by m.marathonname, e.eventname, re.racetime;
 
 4) 
 
+select 
+	e.eventname AS Event,
+	count(re.racetime) AS Col_Participant
+from "event" e
+join registrationevent re on re.eventid = e.eventid 
+where re.racetime is not null and re.racetime != 0
+group by e.eventname;
+
+select
+	e.eventname AS Event,
+	round(avg(re.racetime), 2) AS mean_RaceTime,
+	((round((avg(re.racetime) / 3600), 0)::text || 'h ') 
+		|| (round((
+			(avg(re.racetime) / 60) - ((avg(re.racetime) / 3600) * 60)
+		), 0)::text || 'min ')
+		|| (round((avg(re.racetime) % 60), 0)::text || 'sec')) AS RaceTime
+from "event" e
+join registrationevent re on re.eventid = e.eventid 
+where re.racetime is not null and re.racetime != 0
+group by e.eventname;
+
+select
+	e.eventname AS Event,
+	row_number() over( partition by e.eventname, g.gender order by re.racetime) AS RankNumber,
+	(((re.racetime / 3600)::text || 'ч ') || (((re.racetime / 60) - (re.racetime / 3600) * 60)::text || 'м ') || ((re.racetime % 60)::text || 'с')) as RaceTime,
+	(u.firstname || ' ' || u.lastname) as FIO,
+	c.countryname AS Rodina,
+	et.eventtypename AS EventType,
+	m.marathonname AS Marathon
+from registration reg
+join runner r on reg.runnerid = r.runnerid
+join gender g on r.genderid = g.genderid 
+join "User" u on r.email = u.email 
+join country c on r.countrycode = c.countrycode
+join registrationevent re on reg.registrationid = re.registrationid
+join "event" e on re.eventid = e.eventid 
+join eventtype et on e.eventtypeid = et.eventtypeid 
+join marathon m on e.marathonid = m.marathonid
+where re.racetime != 0 and re.racetime is not null;
