@@ -1,4 +1,4 @@
-1) Runners 
+1)Runners 
 
 select "User".firstname, "User".lastname, countrycode as Bibnumber
 from runner
@@ -12,24 +12,24 @@ where countrycode = (
 	)
 );
 
-2) RaceTime
+2)RaceTime
 
 select u.firstname, 
 		u.lastname, 
 		g.gender, 
 		(date_part('year', age(r.dateofbirth)) || ' years old') as age, 
-		m.marathonname, 
-		re.racetime
+		e.eventname, 
+		re.racetime 
 from public."User" u
 join runner r on u.email = r.email
 join gender g on r.genderid = g.genderid
-join country c on r.countrycode = c.countrycode
-join marathon m on c.countrycode = m.countrycode
-join "event" e on m.marathonid = e.marathonid
-join registrationevent re on e.eventid = re.eventid
-where u.firstname = 'ANTONIO' and re.racetime is not null;
+join registration reg on r.runnerid = reg.runnerid
+join registrationevent re on reg.registrationid = re.registrationid 
+join "event" e on re.eventid = e.eventid 
+where re.racetime is not null and re.racetime != 0
+order by e.eventname, re.racetime;
 
-3) Marathon\event\time 
+3)Marathon\event\time 
 
 select
 	(u.firstname || ' ' || u.lastname) as FIO,
