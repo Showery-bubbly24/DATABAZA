@@ -31,17 +31,22 @@ order by e.eventname, re.racetime;
 
 3)Marathon\event\time 
 
-select
-	(u.firstname || ' ' || u.lastname) as FIO,
-	m.marathonname as Marathon,
-	e.eventname as Event,
-	(((re.racetime / 3600)::text || 'h ') || (((re.racetime / 60) - (re.racetime / 3600) * 60)::text || 'min ') || ((re.racetime % 60)::text || 'sec')) as RaceTime
+select (u.firstname || ' ' || u.lastname) as FIO,
+		g.gender,
+		m.marathonname as Marathon,
+		e.eventname as event,
+		(((re.racetime / 3600)::text || 'h ') || (((re.racetime / 60) - (re.racetime / 3600) * 60)::text || 'min ') || ((re.racetime % 60)::text || 'sec')) as RaceTime,
+		row_number() over( partition by e.eventname order by re.racetime),
+		row_number() over( partition by e.eventname, g.gender order by re.racetime)
 from public."User" u
 join runner r on u.email = r.email
-join marathon m on r.countrycode = m.countrycode
-join "event" e on m.marathonid = e.marathonid
-join registrationevent re on e.eventid = re.eventid
-where re.racetime is not null;
+join gender g on r.genderid = g.genderid 
+join registration reg on r.runnerid = reg.runnerid 
+join registrationevent re on reg.registrationid = re.registrationid 
+join "event" e on re.eventid = e.eventid
+join marathon m on e.marathonid = m.marathonid
+where re.racetime != 0
+order by m.marathonname, e.eventname, re.racetime;
 
 4) 
 
