@@ -4,8 +4,6 @@ There are a lot of scripts...
 from the lessons:
 - from 03.10.2024
 
-Created by SHowe.. Daniil Belokonev
-
 IP1-23 Group  
 
 
@@ -13,4 +11,5 @@ IP1-23 Group
 
 Database with runners, sponsors, volunteers. And also a lot of requests...
 
+Created by SHowe.. Daniil Belokonev
 
