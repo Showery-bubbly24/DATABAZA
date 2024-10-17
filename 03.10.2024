@@ -112,6 +112,7 @@ where m.marathonname = 'Marathon Skills 2014' and rs.registrationstatus = 'Race 
 select 
 	m.marathonname,
 	(u.firstname || ' ' || u.lastname) as FIO,
+	u.email,
 	rs.registrationstatus,
 	et.eventtypename 
 from "User" u
@@ -127,6 +128,7 @@ GROUP BY
     m.marathonname,
     u.firstname,
     u.lastname,
+    u.email,
     rs.registrationstatus,
 	et.eventtypename;
 
