@@ -159,3 +159,18 @@ from charity c
 join registration reg on c.charityid = reg.charityid
 join sponsorship s on reg.registrationid = s.registrationid
 group by c.charityname;
+
+7)
+
+select 
+	(u.firstname || ' ' || u.lastname) as FIO,
+	u."password",
+	date_part('year', age(r.dateofbirth))
+from "User" u
+join runner r on u.email = r.email
+where char_length(u."password") >= 6 and 
+	u."password" similar to '%[a-z]%' and 
+	u."password" similar to '%[0-9]%' and 
+	u."password" similar to '%[!@#$%^]%' and 
+	date_part('year', age(r.dateofbirth)) >= 10;
+
