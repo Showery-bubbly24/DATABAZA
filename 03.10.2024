@@ -133,3 +133,29 @@ GROUP BY
 	et.eventtypename;
 
 --??
+
+6)
+
+select 
+	c.charityname as orga,
+	s.sponsorname as sponsor_FIO
+from sponsorship s
+join registration reg on s.registrationid = reg.registrationid
+join charity c on reg.charityid = c.charityid
+order by c.charityname;
+
+select
+	count(charityname) as Colvo_orgs
+from charity;
+
+select
+	sum(amount) as Obsh_amount
+from sponsorship;
+
+select
+	c.charityname,
+	count(s.sponsorname)
+from charity c
+join registration reg on c.charityid = reg.charityid
+join sponsorship s on reg.registrationid = s.registrationid
+group by c.charityname;
