@@ -1,8 +1,8 @@
 1)
 
-select
-	(u.firstname || ' ' || u.lastname) as FIO,
-	r.countrycode as Bibnumber
+select 
+	m.marathonname,
+	(u.firstname || ' ' || u.lastname) as FIO
 from "User" u 
 join runner r on u.email = r.email 
 join gender g on r.genderid = g.genderid 
@@ -10,16 +10,19 @@ join registration reg on r.runnerid = reg.runnerid
 join registrationevent re on reg.registrationid = re.registrationid 
 join "event" e on re.eventid = e.eventid
 join marathon m on e.marathonid = m.marathonid
-where m.marathonname = 'Marathon Skills 2014';
+where m.marathonname = 'Marathon Skills 2014'
+GROUP BY 
+    m.marathonname,
+    u.firstname,
+    u.lastname
 
 2)
 
-select u.firstname, 
-		u.lastname, 
-		g.gender, 
-		(date_part('year', age(r.dateofbirth)) || ' years old') as age, 
-		e.eventname, 
-		re.racetime 
+select (u.firstname || ' ' || u.lastname) as FIO, 
+	g.gender, 
+	(date_part('year', age(r.dateofbirth)) || ' years old') as age, 
+	e.eventname, 
+	re.racetime 
 from public."User" u
 join runner r on u.email = r.email
 join gender g on r.genderid = g.genderid
