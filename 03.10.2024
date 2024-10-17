@@ -174,3 +174,15 @@ where char_length(u."password") >= 6 and
 	u."password" similar to '%[!@#$%^]%' and 
 	date_part('year', age(r.dateofbirth)) >= 10;
 
+select 
+	count(v.volunteerid)
+from volunteer v;
+
+select 
+	v.firstname,
+	v.lastname,
+	g.gender,
+	c.countryname
+from volunteer v
+join gender g on v.genderid = g.genderid
+join country c on v.countrycode = c.countrycode;
