@@ -1,4 +1,4 @@
-1)Runners 
+1)
 
 select
 	(u.firstname || ' ' || u.lastname) as FIO,
@@ -12,7 +12,7 @@ join "event" e on re.eventid = e.eventid
 join marathon m on e.marathonid = m.marathonid
 where m.marathonname = 'Marathon Skills 2014';
 
-2)RaceTime
+2)
 
 select u.firstname, 
 		u.lastname, 
@@ -29,7 +29,7 @@ join "event" e on re.eventid = e.eventid
 where re.racetime is not null and re.racetime != 0
 order by e.eventname, re.racetime;
 
-3)Marathon\event\time 
+3)
 
 select (u.firstname || ' ' || u.lastname) as FIO,
 		g.gender,
@@ -89,3 +89,5 @@ join "event" e on re.eventid = e.eventid
 join eventtype et on e.eventtypeid = et.eventtypeid 
 join marathon m on e.marathonid = m.marathonid
 where re.racetime != 0 and re.racetime is not null;
+
+5) 
