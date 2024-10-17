@@ -94,3 +94,28 @@ join marathon m on e.marathonid = m.marathonid
 where re.racetime != 0 and re.racetime is not null;
 
 5) 
+
+--??
+
+select 
+	m.marathonname,
+	(u.firstname || ' ' || u.lastname) as FIO,
+	rs.registrationstatus,
+	et.eventtypename 
+from "User" u
+join runner r on u.email = r.email
+join registration reg on r.runnerid = reg.runnerid
+join registrationstatus rs on reg.registrationstatusid = rs.registrationstatusid 
+join registrationevent re on reg.registrationid = re.registrationid
+join event e on re.eventid = e.eventid
+join eventtype et on e.eventtypeid = et.eventtypeid
+join marathon m on e.marathonid = m.marathonid
+where m.marathonname = 'Marathon Skills 2014' and rs.registrationstatus = 'Race Attended' and et.eventtypename = 'Half Marathon'
+GROUP BY 
+    m.marathonname,
+    u.firstname,
+    u.lastname,
+    rs.registrationstatus,
+	et.eventtypename;
+
+--??
