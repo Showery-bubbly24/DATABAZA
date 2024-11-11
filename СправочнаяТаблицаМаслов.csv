@@ -1,0 +1,68 @@
+,,,,,,,,
+,Таблица,Столбец,Тип Данных,Ключ,Наименование ключа,Формат ввода,Обязательность,Доп. Описание
+,Users,user_id,serial,PK,users_pkey,,Yes,unique
+,,user_login,text,,,,Yes,unique
+,,user_password,text,,,,Yes,
+,,user_fio,text,,,,Yes,
+,,tel_number,text,,,,Yes,
+,,email,text,,,,Yes,
+,,role_id,text,FK,users_roles_fk,,Yes,
+,Roles,role_id,text,PK,roles_pkey,,Yes,unique
+,,role_name,text,,,,Yes,unique
+,Patients,patient_id,serial,PK,patients_pkey,,Yes,unique
+,,user_id,serial,FK,user_patient,,Yes,unique
+,,dateofbirth,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,,passport,int8,,,,Yes,unique
+,,polis_code,text,FK,patients_polises_fk,,Yes,unique
+,Polises,polis_code,text,PK,polis_pkey,,Yes,unique
+,,polis_type_code,serial,FK,polis_type,,Yes,
+,,insurancecompany_code,serial,FK,polis_comp,,Yes,
+,PolisTypes,polis_type_code,serial,PK,polistypes_pkey,,Yes,unique
+,,polistype,text,,,,Yes,unique
+,InsuranceCompanies,insurancecompany_code,serial,PK,insurancecompanies_pkey,,Yes,unique
+,,companyname,text,,,,Yes,unique
+,,companyaddress,text,,,,Yes,
+,,inn,int8,,,,Yes,unique
+,,currentaccount,numeric,,,,Yes,unique
+,,BIK,int4,,,,Yes,unique
+,Accountants,accountant_id,serial,PK,accountants_pkey,,Yes,unique
+,,user_id,serial,FK,user_accou,,Yes,unique
+,Invoices,invoice_id,serial,PK,invoices_pkey,,Yes,unique
+,,accountant_id,serial,FK,invoice_acc,,Yes,
+,,polis_code,text,FK,invoices_polises_fk,,Yes,
+,Services,service_code,int,PK,services_pkey,,Yes,unique
+,,service_name,text,,,,Yes,unique
+,,relise_date,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,,averageDeviation,int,,,Time in seconds,,default 30
+,,cost,numeric,,,,,default null
+,Accountant_services,accountant_service_id,serial,PK,accountant_services_pkey,,Yes,unique
+,,accountant_id,serial,FK,service_acctant,,Yes,
+,,service_code,int,FK,acctant_service,,Yes,
+,OrderTransactions,transaction_id,serial,PK,ordertransactions_pkey,,Yes,unique
+,,order_id,serial,FK,order_transaction,,Yes,unique
+,,service_code,int,FK,service_orders,,Yes,
+,Orders,order_id,serial,PK,orders_pkey,,Yes,unique
+,,reliseDate,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,,order_status_id,serial,FK,orders_statuses_fk,,,default 3
+,,ordertime,int4,,,Time in days,Yes,default 1
+,,patient_id,serial,FK,order_patients,,Yes,
+,AnalyzerWork,analyzer_code,serial,PK,analyzerwork_pkey,,Yes,unique
+,,service_code,int4,FK,analyzer_service,,Yes,
+,,dateofreeipt,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,,dateofservice,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,,timeofservice,int4,,,Time in seconds,,default 30
+,ProvidedService,providedervices_id,serial,PK,providedservices_pkey,,Yes,unique
+,,service_id,int4,FK,prov_service,,Yes,
+,,dateofservice,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,,laborant_id,serial,FK,prov_lab_service,,Yes,
+,,analyzer_code,serial,FK,provz_analise_work,,Yes,
+,Laborants,laborant_id,serial,PK,laborants_pkey,,Yes,unique
+,,user_id,serial,FK,user_laborants,,Yes,unique
+,Laborantservices,laborantservice_id,serial,PK,laborantservices_pkey,,Yes,unique
+,,laborant_id,serial,FK,laborant_service,,Yes,
+,,service_code,int4,FK,service_laborant,,Yes,
+,Lastentries,last_entry_id,serial,PK,latentries_pkey,,Yes,
+,,user_id,serial,FK,lsentry_user_time,,Yes,
+,,lastentrydate,timestamp,,,DD-MM-YY HH:MM:SS,,default CURRENT_DATE
+,Statuses,order_status_id,serial,PK,statuses_pkey,,Yes,
+,,order_status_type,text,,,,Yes,
